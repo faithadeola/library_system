@@ -1,0 +1,25 @@
+2025-03-16 07:57:47 - Book with ID 101 borrowed by Member 1
+2025-03-16 07:57:47 - Book with ID 102 borrowed by Member 2
+2025-03-16 07:57:47 - Member 101 returned Book with ID 1
+2025-03-16 07:57:47 - Member 101 returned Book with ID 2
+2025-03-16 08:30:56 - Book with ID 101 borrowed by Member 1
+2025-03-16 08:30:56 - Book with ID 102 borrowed by Member 2
+2025-03-16 08:30:56 - Member 101 returned Book with ID 1
+2025-03-16 08:30:56 - Member 101 returned Book with ID 2
+2025-03-16 08:43:39 - Book with ID 101 borrowed by Member 1
+2025-03-16 08:43:39 - Book with ID 102 borrowed by Member 2
+2025-03-16 08:43:39 - Member 101 returned Book with ID 1
+2025-03-16 08:43:39 - Member 101 returned Book with ID 2
+[2025-03-16 20:21:33] Added new member: feranmi (ID: 8318)
+[2025-03-16 20:27:23] Added new member: james (ID: 5027)
+[2025-03-16 20:32:36] Added new member: bolu (ID: 1770)
+[2025-03-16 20:37:23] Updated member details for ID: 1
+[2025-03-16 21:08:10] Exported 5 books to CSV file: books.csv
+[2025-03-16 21:27:46] Exported 6 books to CSV file: books.csv
+[2025-03-16 21:27:58] Exported 2 members to CSV file: members.csv
+[2025-03-16 21:29:30] Added member: faith (ID: 5189)
+[2025-03-16 21:29:30] Added new member: faith (ID: 5189)
+[2025-03-16 21:30:33] Member ID 5189 borrowed Book ID 9989
+[2025-03-16 21:30:33] Book 'ololufe yoruba' borrowed by faith
+[2025-03-16 21:31:05] Member ID 5189 returned Book ID 9989
+[2025-03-16 21:31:05] Book 'ololufe yoruba' returned by faith
