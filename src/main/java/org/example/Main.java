@@ -327,24 +327,24 @@ public class Main {
 
             switch (action) {
                 case 1 -> {
-                    // Borrow a book
+
                     System.out.print("Enter member email: ");
                     String email = scanner.nextLine();
                     
-                    // Verify member exists
+
                     int memberId = borrowingService.findMemberByEmail(email);
                     if (memberId == -1) {
-                        System.out.println("\n❌ Member not found with that email. Please register first.");
+                        System.out.println("\n Member not found with that email. Please register first.");
                         continue;
                     }
                     
-                    // Show available books
+
                     List<Book> availableBooks = bookService.getAllBooks().stream()
                             .filter(book -> book.getAvailableCopies() > 0)
                             .collect(Collectors.toList());
                     
                     if (availableBooks.isEmpty()) {
-                        System.out.println("\n❌ No books available for borrowing.");
+                        System.out.println("\n No books available for borrowing.");
                         continue;
                     }
                     
@@ -358,30 +358,30 @@ public class Main {
                     
                     System.out.print("\nEnter Book ID to borrow: ");
                     int bookId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
                     
                     boolean success = borrowingService.borrowBook(bookId, memberId);
                     if (success) {
-                        System.out.println("\n✅ Book borrowed successfully!");
+                        System.out.println("\n Book borrowed successfully!");
                     }
                 }
                 case 2 -> {
-                    // Return a book
+
                     System.out.print("Enter member email: ");
                     String email = scanner.nextLine();
                     
-                    // Verify member exists
+
                     int memberId = borrowingService.findMemberByEmail(email);
                     if (memberId == -1) {
-                        System.out.println("\n❌ Member not found with that email.");
+                        System.out.println("\n Member not found with that email.");
                         continue;
                     }
                     
-                    // Show books borrowed by this member
+
                     List<Book> borrowedBooks = borrowingService.getBorrowedBookDetailsByMember(memberId);
                     
                     if (borrowedBooks.isEmpty()) {
-                        System.out.println("\n❌ No books currently borrowed by this member.");
+                        System.out.println("\n No books currently borrowed by this member.");
                         continue;
                     }
                     
@@ -394,41 +394,41 @@ public class Main {
                     
                     System.out.print("\nEnter Book ID to return: ");
                     int bookId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
                     
                     boolean success = borrowingService.returnBook(bookId, memberId);
                     if (success) {
-                        System.out.println("\n✅ Book returned successfully!");
+                        System.out.println("\n Book returned successfully!");
                     }
                 }
                 case 3 -> {
-                    // View all borrowing records
+
                     List<String> borrowingDetails = borrowingService.getBorrowingDetails();
                     
                     if (borrowingDetails.isEmpty()) {
-                        System.out.println("\nℹ️ No borrowing records found.");
+                        System.out.println("\n No borrowing records found.");
                     } else {
                         System.out.println("\nAll Borrowing Records:");
                         borrowingDetails.forEach(System.out::println);
                     }
                 }
                 case 4 -> {
-                    // View member's borrowed books
+
                     System.out.print("Enter member email: ");
                     String email = scanner.nextLine();
                     
-                    // Verify member exists
+
                     int memberId = borrowingService.findMemberByEmail(email);
                     if (memberId == -1) {
-                        System.out.println("\n❌ Member not found with that email.");
+                        System.out.println("\n Member not found with that email.");
                         continue;
                     }
                     
-                    // Show books borrowed by this member
+
                     List<Book> borrowedBooks = borrowingService.getBorrowedBookDetailsByMember(memberId);
                     
                     if (borrowedBooks.isEmpty()) {
-                        System.out.println("\nℹ️ No books currently borrowed by this member.");
+                        System.out.println("\n No books currently borrowed by this member.");
                     } else {
                         System.out.println("\nBooks Currently Borrowed:");
                         borrowedBooks.forEach(book -> {
@@ -439,7 +439,7 @@ public class Main {
                     }
                 }
                 case 5 -> {
-                    return; // Return to main menu
+                    return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");
             }

@@ -15,12 +15,6 @@ public class Book {
         this.availableCopies = availableCopies;
     }
 
-//    public Book(String title, String author, String genre, int availableCopies) {
-//        this.title = title;
-//        this.author = author;
-//        this.genre = genre;
-//        this.availableCopies = availableCopies;
-//    }
 
 
     public int getBookId() { return bookId; }

@@ -37,7 +37,7 @@ public class MemberDAOImpl implements MemberDAO {
             writer.newLine();
             System.out.println("📂 Member saved to file.");
         } catch (IOException e) {
-            System.out.println("❌ Error writing member to file: " + e.getMessage());
+            System.out.println(" Error writing member to file: " + e.getMessage());
         }
     }
     
@@ -46,13 +46,13 @@ public class MemberDAOImpl implements MemberDAO {
         File file = new File(FILE_PATH);
         
         if (!file.exists()) {
-            System.out.println("📂 Members file not found. Will be created when adding members.");
+            System.out.println(" Members file not found. Will be created when adding members.");
             return;
         }
         
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-            memberList.clear(); // Clear existing list to avoid duplicates
+            memberList.clear();
             
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -62,18 +62,18 @@ public class MemberDAOImpl implements MemberDAO {
                         Member member = new Member(id, parts[1], parts[2], parts[3]);
                         memberList.add(member);
                     } catch (NumberFormatException e) {
-                        System.out.println("⚠️ Invalid member ID format in file: " + parts[0]);
+                        System.out.println(" Invalid member ID format in file: " + parts[0]);
                     }
                 }
             }
             
             System.out.println("📂 Loaded " + memberList.size() + " members from file.");
         } catch (IOException e) {
-            System.out.println("❌ Error reading members from file: " + e.getMessage());
+            System.out.println(" Error reading members from file: " + e.getMessage());
         }
     }
     
-    // Update member in file
+
     private void updateMemberInFile(Member updatedMember) {
         File file = new File(FILE_PATH);
         List<String> fileLines = new ArrayList<>();
@@ -88,7 +88,7 @@ public class MemberDAOImpl implements MemberDAO {
                     try {
                         int id = Integer.parseInt(parts[0]);
                         if (id == updatedMember.getId()) {
-                            // Replace with updated details
+
                             line = updatedMember.getId() + "," + 
                                    updatedMember.getName() + "," + 
                                    updatedMember.getEmail() + "," + 
@@ -96,34 +96,34 @@ public class MemberDAOImpl implements MemberDAO {
                             memberFound = true;
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("⚠️ Invalid member ID format in file: " + parts[0]);
+                        System.out.println(" Invalid member ID format in file: " + parts[0]);
                     }
                 }
                 fileLines.add(line);
             }
             
         } catch (IOException e) {
-            System.out.println("❌ Error reading file: " + e.getMessage());
+            System.out.println(" Error reading file: " + e.getMessage());
             return;
         }
         
         if (!memberFound) {
-            // If member not found, add it
+
             fileLines.add(updatedMember.getId() + "," + 
                         updatedMember.getName() + "," + 
                         updatedMember.getEmail() + "," + 
                         updatedMember.getPhone());
         }
         
-        // Write updated content back to file
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : fileLines) {
                 writer.write(line);
                 writer.newLine();
             }
-            System.out.println("📂 Member updated in file.");
+            System.out.println(" Member updated in file.");
         } catch (IOException e) {
-            System.out.println("❌ Error updating member in file: " + e.getMessage());
+            System.out.println(" Error updating member in file: " + e.getMessage());
         }
     }
     
@@ -143,21 +143,21 @@ public class MemberDAOImpl implements MemberDAO {
                         int id = Integer.parseInt(parts[0]);
                         if (id == memberId) {
                             memberFound = true;
-                            continue; // Skip this line to delete it
+                            continue;
                         }
                     } catch (NumberFormatException e) {
-                        // Keep invalid lines to avoid data loss
+
                     }
                 }
                 fileLines.add(line);
             }
             
         } catch (IOException e) {
-            System.out.println("❌ Error reading file: " + e.getMessage());
+            System.out.println(" Error reading file: " + e.getMessage());
             return;
         }
         
-        // Write updated content back to file
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : fileLines) {
                 writer.write(line);
@@ -165,18 +165,18 @@ public class MemberDAOImpl implements MemberDAO {
             }
             
             if (memberFound) {
-                System.out.println("📂 Member deleted from file.");
+                System.out.println(" Member deleted from file.");
             } else {
-                System.out.println("⚠️ Member with ID " + memberId + " not found in file.");
+                System.out.println(" Member with ID " + memberId + " not found in file.");
             }
         } catch (IOException e) {
-            System.out.println("❌ Error updating file: " + e.getMessage());
+            System.out.println(" Error updating file: " + e.getMessage());
         }
     }
 
     @Override
     public void addMember(Member member) {
-        // Add to database
+
         String query = "INSERT INTO members (member_id, name, email, phone) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -186,29 +186,28 @@ public class MemberDAOImpl implements MemberDAO {
             stmt.setString(4, member.getPhone());
             stmt.executeUpdate();
             
-            // Add to in-memory list
+
             memberList.add(member);
             
-            // Save to file
+
             saveMemberToFile(member);
             
-            System.out.println("✅ Member added successfully!");
+            System.out.println(" Member added successfully!");
             Logger.log("Added member: " + member.getName() + " (ID: " + member.getId() + ")");
         } catch (SQLException e) {
-            System.out.println("❌ Error adding member to database: " + e.getMessage());
+            System.out.println(" Error adding member to database: " + e.getMessage());
         }
     }
 
     @Override
-    public Member getMemberById(int id) {
-        // First check in-memory list for faster access
+    public Member getMemberById(int id) {// First check in-memory list for faster access
         for (Member member : memberList) {
             if (member.getId() == id) {
                 return member;
             }
         }
 
-        // If not found in memory, try database
+
         String query = "SELECT * FROM members WHERE member_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -221,12 +220,12 @@ public class MemberDAOImpl implements MemberDAO {
                         rs.getString("email"),
                         rs.getString("phone")
                 );
-                // Add to in-memory list for future quick access
+
                 memberList.add(member);
                 return member;
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error retrieving member from database: " + e.getMessage());
+            System.out.println(" Error retrieving member from database: " + e.getMessage());
         }
         
         return null;
@@ -234,10 +233,10 @@ public class MemberDAOImpl implements MemberDAO {
 
     @Override
     public List<Member> getAllMembers() {
-        // Clear existing list to avoid duplicates
+
         memberList.clear();
         
-        // Load from database
+
         String query = "SELECT * FROM members";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -253,20 +252,20 @@ public class MemberDAOImpl implements MemberDAO {
                 memberList.add(member);
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error loading members from database: " + e.getMessage());
-            
-            // If database load fails, make sure we at least have data from file
+            System.out.println(" Error loading members from database: " + e.getMessage());
+
+
             if (memberList.isEmpty()) {
                 loadMembersFromFile();
             }
         }
         
-        return new ArrayList<>(memberList); // Return a copy to avoid external modification
+        return new ArrayList<>(memberList);
     }
 
     @Override
     public void updateMember(Member member) {
-        // Update in database
+
         String query = "UPDATE members SET name = ?, email = ?, phone = ? WHERE member_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -290,13 +289,13 @@ public class MemberDAOImpl implements MemberDAO {
                 // Update in file
                 updateMemberInFile(member);
                 
-                System.out.println("✅ Member updated successfully!");
+                System.out.println(" Member updated successfully!");
                 Logger.log("Updated member: " + member.getName() + " (ID: " + member.getId() + ")");
             } else {
-                System.out.println("❌ Member with ID " + member.getId() + " not found in database.");
+                System.out.println("Member with ID " + member.getId() + " not found in database.");
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error updating member in database: " + e.getMessage());
+            System.out.println(" Error updating member in database: " + e.getMessage());
         }
     }
 
@@ -321,13 +320,13 @@ public class MemberDAOImpl implements MemberDAO {
                 // Delete from file
                 deleteMemberFromFile(id);
                 
-                System.out.println("✅ Member deleted successfully!");
+                System.out.println(" Member deleted successfully!");
                 Logger.log("Deleted member with ID: " + id);
             } else {
-                System.out.println("❌ Member with ID " + id + " not found in database.");
+                System.out.println(" Member with ID " + id + " not found in database.");
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error deleting member from database: " + e.getMessage());
+            System.out.println(" Error deleting member from database: " + e.getMessage());
         }
     }
 }

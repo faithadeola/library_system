@@ -29,35 +29,35 @@ public class BorrowingDAOImpl implements BorrowingDAO {
 
     public BorrowingDAOImpl() {
         this.bookDAO = new BookDAOImpl();
-        loadBorrowingsFromFile();     // 📂 Load borrowings from file
-        loadBorrowingsFromDatabase(); // 🗂️ Load borrowings from database
+        loadBorrowingsFromFile();
+        loadBorrowingsFromDatabase();
     }
 
     @Override
     public void borrowBook(int bookId, int memberId) {
-        // Check if book exists and has available copies
+
         Book book = findBookById(bookId);
         if (book == null) {
-            System.out.println("❌ Book with ID " + bookId + " not found.");
+            System.out.println(" Book with ID " + bookId + " not found.");
             return;
         }
         
         if (book.getAvailableCopies() <= 0) {
-            System.out.println("❌ No copies of this book are available for borrowing.");
+            System.out.println(" No copies of this book are available for borrowing.");
             return;
         }
         
-        // Check if book is already borrowed by this member
+
         if (isBookBorrowedByMember(bookId, memberId)) {
-            System.out.println("❌ This book is already borrowed by you.");
+            System.out.println(" This book is already borrowed by you.");
             return;
         }
 
         try {
-            // First, update available copies in the book
+
             updateBookCopies(bookId, -1); // Decrease by 1
             
-            // Then create a borrowing record
+
             int borrowingId = borrowings.size() + 1;
             Date borrowDate = new Date();
             Date returnDate = null;
@@ -65,14 +65,14 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             Borrowing borrowing = new Borrowing(borrowingId, bookId, memberId, borrowDate, returnDate);
             borrowings.add(borrowing);
             
-            // Save to database and file
+
             saveBorrowingToDatabase(borrowing);
             saveBorrowingToFile(borrowing);
             
-            System.out.println("✅ Book borrowed successfully.");
+            System.out.println(" Book borrowed successfully.");
             Logger.log("Member ID " + memberId + " borrowed Book ID " + bookId);
         } catch (Exception e) {
-            System.out.println("❌ Error borrowing book: " + e.getMessage());
+            System.out.println(" Error borrowing book: " + e.getMessage());
         }
     }
 
@@ -81,27 +81,27 @@ public class BorrowingDAOImpl implements BorrowingDAO {
         // Find the borrowing record
         Borrowing borrowing = findBorrowing(bookId, memberId);
         if (borrowing == null) {
-            System.out.println("❌ No borrowing record found for this book and member.");
+            System.out.println(" No borrowing record found for this book and member.");
             return;
         }
         
         try {
-            // Update available copies in the book
-            updateBookCopies(bookId, 1); // Increase by 1
+
+            updateBookCopies(bookId, 1);
             
-            // Update the borrowing record with return date
+
             borrowing.setReturnDate(new Date());
             
-            // Update in database and file
+
             updateBorrowingInDatabase(borrowing);
             updateBorrowingInFile(borrowing);
             
-            // Keep in memory for history
+
             
-            System.out.println("✅ Book returned successfully.");
+            System.out.println(" Book returned successfully.");
             Logger.log("Member ID " + memberId + " returned Book ID " + bookId);
         } catch (Exception e) {
-            System.out.println("❌ Error returning book: " + e.getMessage());
+            System.out.println(" Error returning book: " + e.getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
         deleteBorrowingFromDatabase(id);
         deleteBorrowingFromFile(id);
         
-        System.out.println("✅ Borrowing record deleted successfully.");
+        System.out.println(" Borrowing record deleted successfully.");
         Logger.log("Deleted borrowing record with ID: " + id);
     }
     
@@ -165,7 +165,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
                 book.setAvailableCopies(book.getAvailableCopies() + change);
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error updating book copies: " + e.getMessage());
+            System.out.println(" Error updating book copies: " + e.getMessage());
         }
     }
     
@@ -207,7 +207,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            System.out.println("❌ Error creating borrowings table: " + e.getMessage());
+            System.out.println(" Error creating borrowings table: " + e.getMessage());
         }
     }
     
@@ -236,7 +236,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error saving borrowing to database: " + e.getMessage());
+            System.out.println(" Error saving borrowing to database: " + e.getMessage());
         }
     }
     
@@ -255,7 +255,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             stmt.setInt(2, borrowing.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("❌ Error updating borrowing in database: " + e.getMessage());
+            System.out.println(" Error updating borrowing in database: " + e.getMessage());
         }
     }
     
@@ -268,11 +268,11 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("❌ Error deleting borrowing from database: " + e.getMessage());
+            System.out.println(" Error deleting borrowing from database: " + e.getMessage());
         }
     }
     
-    // File Operations
+
     
     private void loadBorrowingsFromFile() {
         File file = new File(FILE_PATH);
@@ -297,19 +297,19 @@ public class BorrowingDAOImpl implements BorrowingDAO {
                         
                         Borrowing borrowing = new Borrowing(id, bookId, memberId, borrowDate, returnDate);
                         
-                        // Only add if not already in list (avoid duplicates)
+
                         if (borrowings.stream().noneMatch(b -> b.getId() == id)) {
                             borrowings.add(borrowing);
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("⚠️ Invalid data format in borrowings file: " + line);
+                        System.out.println(" Invalid data format in borrowings file: " + line);
                     }
                 }
             }
             
-            System.out.println("📂 Loaded " + borrowings.size() + " borrowing records from file.");
+            System.out.println(" Loaded " + borrowings.size() + " borrowing records from file.");
         } catch (IOException e) {
-            System.out.println("❌ Error reading borrowings file: " + e.getMessage());
+            System.out.println(" Error reading borrowings file: " + e.getMessage());
         }
     }
     
@@ -317,9 +317,9 @@ public class BorrowingDAOImpl implements BorrowingDAO {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(formatBorrowingForFile(borrowing));
             writer.newLine();
-            System.out.println("📂 Borrowing record saved to file.");
+            System.out.println(" Borrowing record saved to file.");
         } catch (IOException e) {
-            System.out.println("❌ Error saving borrowing to file: " + e.getMessage());
+            System.out.println(" Error saving borrowing to file: " + e.getMessage());
         }
     }
     
@@ -349,24 +349,24 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             }
             
         } catch (IOException e) {
-            System.out.println("❌ Error reading borrowings file: " + e.getMessage());
+            System.out.println(" Error reading borrowings file: " + e.getMessage());
             return;
         }
         
-        // If borrowing not found, add it
+
         if (!borrowingFound) {
             fileLines.add(formatBorrowingForFile(updatedBorrowing));
         }
         
-        // Write updated content back to file
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : fileLines) {
                 writer.write(line);
                 writer.newLine();
             }
-            System.out.println("📂 Borrowing record updated in file.");
+            System.out.println(" Borrowing record updated in file.");
         } catch (IOException e) {
-            System.out.println("❌ Error updating borrowings file: " + e.getMessage());
+            System.out.println(" Error updating borrowings file: " + e.getMessage());
         }
     }
     
@@ -385,21 +385,21 @@ public class BorrowingDAOImpl implements BorrowingDAO {
                         int id = Integer.parseInt(parts[0]);
                         if (id == borrowingId) {
                             borrowingFound = true;
-                            continue; // Skip this line to delete it
+                            continue;
                         }
                     } catch (NumberFormatException e) {
-                        // Keep invalid lines
+
                     }
                 }
                 fileLines.add(line);
             }
             
         } catch (IOException e) {
-            System.out.println("❌ Error reading borrowings file: " + e.getMessage());
+            System.out.println(" Error reading borrowings file: " + e.getMessage());
             return;
         }
         
-        // Write updated content back to file
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : fileLines) {
                 writer.write(line);
@@ -407,12 +407,12 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             }
             
             if (borrowingFound) {
-                System.out.println("📂 Borrowing record deleted from file.");
+                System.out.println(" Borrowing record deleted from file.");
             } else {
-                System.out.println("⚠️ Borrowing record with ID " + borrowingId + " not found in file.");
+                System.out.println(" Borrowing record with ID " + borrowingId + " not found in file.");
             }
         } catch (IOException e) {
-            System.out.println("❌ Error updating borrowings file: " + e.getMessage());
+            System.out.println(" Error updating borrowings file: " + e.getMessage());
         }
     }
     

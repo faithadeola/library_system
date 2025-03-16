@@ -83,7 +83,7 @@ public class BookDAOImpl implements BookDAO {
                 .toList();
         
         if (result.isEmpty()) {
-            System.out.println("❌ No books found in genre: " + genre);
+            System.out.println(" No books found in genre: " + genre);
         }
         return result;
     }
@@ -91,7 +91,7 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public List<Book> sortBooksByTitle() {
         if (bookList.isEmpty()) {
-            System.out.println("❌ No books available to sort.");
+            System.out.println(" No books available to sort.");
             return new ArrayList<>();
         }
         List<Book> sortedList = new ArrayList<>(bookList);
@@ -102,7 +102,7 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public List<Book> sortBooksByGenre() {
         if (bookList.isEmpty()) {
-            System.out.println("❌ No books available to sort.");
+            System.out.println(" No books available to sort.");
             return new ArrayList<>();
         }
         List<Book> sortedList = new ArrayList<>(bookList);
@@ -138,28 +138,28 @@ public class BookDAOImpl implements BookDAO {
                 iterator.remove();
                 deleteBookFromDatabase(bookId);
                 deleteBookFromFile(bookId);
-                System.out.println("✅ Book deleted successfully: " + book.getTitle());
+                System.out.println(" Book deleted successfully: " + book.getTitle());
                 bookFound = true;
                 break;
             }
         }
         
         if (!bookFound) {
-            System.out.println("❌ Book with ID " + bookId + " not found.");
+            System.out.println(" Book with ID " + bookId + " not found.");
         }
     }
 
-    // ✅ Save book to text file
+
     private void saveBookToFile(Book book) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(book.getBookId() +"," + book.getTitle() + "," + book.getAuthor() + "," + book.getGenre() + "," + book.getAvailableCopies());
             writer.newLine();
         } catch (IOException e) {
-            System.out.println("❌ Error writing to file: " + e.getMessage());
+            System.out.println(" Error writing to file: " + e.getMessage());
         }
     }
 
-    // ✅ Load books from file
+
     private void loadBooksFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -172,11 +172,11 @@ public class BookDAOImpl implements BookDAO {
                 }
             }
         } catch (IOException e) {
-            System.out.println("📂 No existing book file found, creating a new one.");
+            System.out.println(" No existing book file found, creating a new one.");
         }
     }
 
-    // ✅ Save book to database (Uses `DatabaseConnection`)
+
     private void saveBookToDatabase(Book book) {
         String sql = "INSERT INTO books (title, author, genre, available_copies, book_id) VALUES (?, ?, ?, ?, ?)";
 
@@ -189,11 +189,11 @@ public class BookDAOImpl implements BookDAO {
             stmt.setInt(5, book.getBookId());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("❌ Error saving book to database: " + e.getMessage());
+            System.out.println(" Error saving book to database: " + e.getMessage());
         }
     }
 
-    // ✅ Load books from database
+
     private void loadBooksFromDatabase() {
         String sql = "SELECT * FROM books";
 
@@ -211,7 +211,7 @@ public class BookDAOImpl implements BookDAO {
                 bookList.add(book);
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error loading books from database: " + e.getMessage());
+            System.out.println(" Error loading books from database: " + e.getMessage());
         }
     }
     
@@ -229,12 +229,12 @@ public class BookDAOImpl implements BookDAO {
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
-                System.out.println("✅ Book updated successfully: " + updatedBook);
+                System.out.println(" Book updated successfully: " + updatedBook);
             } else {
-                System.out.println("❌ Book with ID " + updatedBook.getBookId() + " not found.");
+                System.out.println(" Book with ID " + updatedBook.getBookId() + " not found.");
             }
         } catch (SQLException e) {
-            System.out.println("⚠️ Error updating book: " + e.getMessage());
+            System.out.println(" Error updating book: " + e.getMessage());
         }
     }
     
@@ -263,12 +263,12 @@ public class BookDAOImpl implements BookDAO {
             }
 
             if (!found) {
-                System.out.println("❌ Book not found in file.");
+                System.out.println(" Book not found in file.");
                 return;
             }
 
         } catch (IOException e) {
-            System.out.println("⚠️ Error reading file: " + e.getMessage());
+            System.out.println(" Error reading file: " + e.getMessage());
             return;
         }
 
@@ -278,9 +278,9 @@ public class BookDAOImpl implements BookDAO {
                 writer.write(line);
                 writer.newLine();
             }
-            System.out.println("✅ Book updated successfully in file.");
+            System.out.println(" Book updated successfully in file.");
         } catch (IOException e) {
-            System.out.println("⚠️ Error writing file: " + e.getMessage());
+            System.out.println(" Error writing file: " + e.getMessage());
         }
     }
     
@@ -293,12 +293,12 @@ public class BookDAOImpl implements BookDAO {
             int rowsAffected = stmt.executeUpdate();
             
             if (rowsAffected > 0) {
-                System.out.println("✅ Book deleted from database.");
+                System.out.println(" Book deleted from database.");
             } else {
-                System.out.println("⚠️ Book not found in database.");
+                System.out.println(" Book not found in database.");
             }
         } catch (SQLException e) {
-            System.out.println("❌ Error deleting book from database: " + e.getMessage());
+            System.out.println(" Error deleting book from database: " + e.getMessage());
         }
     }
     
@@ -323,7 +323,7 @@ public class BookDAOImpl implements BookDAO {
             }
             
         } catch (IOException e) {
-            System.out.println("⚠️ Error reading file: " + e.getMessage());
+            System.out.println("️ Error reading file: " + e.getMessage());
             return;
         }
         
@@ -335,12 +335,12 @@ public class BookDAOImpl implements BookDAO {
             }
             
             if (bookFound) {
-                System.out.println("✅ Book deleted from file.");
+                System.out.println(" Book deleted from file.");
             } else {
-                System.out.println("⚠️ Book not found in file.");
+                System.out.println(" Book not found in file.");
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error writing file: " + e.getMessage());
+            System.out.println(" Error writing file: " + e.getMessage());
         }
     }
 }

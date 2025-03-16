@@ -34,7 +34,7 @@ public class BookService {
         try {
             return bookDAO.searchBookByTitle(title);
         } catch (NoSuchElementException e) {
-            System.out.println("❌ " + e.getMessage());
+            System.out.println(" " + e.getMessage());
             return null;
         }
     }
