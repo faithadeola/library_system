@@ -15,7 +15,7 @@ public class MemberService {
     }
 
     public void addMember(String name, String email, String phone) {
-        // Generate a random member ID between 1000 and 9999
+
         Random random = new Random();
         int memberId = 1000 + random.nextInt(9000);
         
@@ -23,13 +23,13 @@ public class MemberService {
         memberDAO.addMember(member);
         
         Logger.log("Added new member: " + name + " (ID: " + memberId + ")");
-        System.out.println("✅ Member added successfully with ID: " + memberId);
+        System.out.println(" Member added successfully with ID: " + memberId);
     }
 
     public void updateMember(int memberId, String name, String email, String phone) {
         Member member = memberDAO.getMemberById(memberId);
         if (member == null) {
-            System.out.println("❌ Member with ID " + memberId + " not found.");
+            System.out.println(" Member with ID " + memberId + " not found.");
             return;
         }
         
@@ -37,26 +37,26 @@ public class MemberService {
         memberDAO.updateMember(updatedMember);
         
         Logger.log("Updated member details for ID: " + memberId);
-        System.out.println("✅ Member updated successfully.");
+        System.out.println(" Member updated successfully.");
     }
 
     public void deleteMember(int memberId) {
         Member member = memberDAO.getMemberById(memberId);
         if (member == null) {
-            System.out.println("❌ Member with ID " + memberId + " not found.");
+            System.out.println(" Member with ID " + memberId + " not found.");
             return;
         }
         
         memberDAO.deleteMember(memberId);
         
         Logger.log("Deleted member with ID: " + memberId);
-        System.out.println("✅ Member deleted successfully.");
+        System.out.println(" Member deleted successfully.");
     }
 
     public Member getMemberById(int memberId) {
         Member member = memberDAO.getMemberById(memberId);
         if (member == null) {
-            System.out.println("❌ Member with ID " + memberId + " not found.");
+            System.out.println(" Member with ID " + memberId + " not found.");
         }
         return member;
     }
@@ -64,7 +64,7 @@ public class MemberService {
     public List<Member> getAllMembers() {
         List<Member> members = memberDAO.getAllMembers();
         if (members.isEmpty()) {
-            System.out.println("ℹ️ No members found in the system.");
+            System.out.println(" No members found in the system.");
         }
         return members;
     }

@@ -33,73 +33,73 @@ public class BorrowingService {
                 return member.getId();
             }
         }
-        return -1; // Member not found
+        return -1;
     }
 
     public boolean borrowBook(int bookId, int memberId) {
         try {
-            // Validate member
+
             Member member = memberDAO.getMemberById(memberId);
             if (member == null) {
-                System.out.println("❌ Member not found.");
+                System.out.println(" Member not found.");
                 return false;
             }
 
             Book book = ((BookDAOImpl) bookDAO).getBookById(bookId);
             if (book == null) {
-                System.out.println("❌ Book not found.");
+                System.out.println(" Book not found.");
                 return false;
             }
 
             if (book.getAvailableCopies() <= 0) {
-                System.out.println("❌ No copies available for borrowing.");
+                System.out.println(" No copies available for borrowing.");
                 return false;
             }
 
-            // Check if already borrowed by this member
+
             if (isBookBorrowedByMember(bookId, memberId)) {
-                System.out.println("❌ You have already borrowed this book.");
+                System.out.println(" You have already borrowed this book.");
                 return false;
             }
 
-            // Process borrowing
+
             borrowingDAO.borrowBook(bookId, memberId);
             Logger.log("Book '" + book.getTitle() + "' borrowed by " + member.getName());
             return true;
         } catch (Exception e) {
-            System.out.println("❌ Error in borrowing process: " + e.getMessage());
+            System.out.println(" Error in borrowing process: " + e.getMessage());
             return false;
         }
     }
 
     public boolean returnBook(int bookId, int memberId) {
         try {
-            // Validate member
+
             Member member = memberDAO.getMemberById(memberId);
             if (member == null) {
-                System.out.println("❌ Member not found.");
+                System.out.println(" Member not found.");
                 return false;
             }
 
-            // Check if book exists
+
             Book book = ((BookDAOImpl) bookDAO).getBookById(bookId);
             if (book == null) {
-                System.out.println("❌ Book not found.");
+                System.out.println(" Book not found.");
                 return false;
             }
 
-            // Check if book is actually borrowed by this member
+
             if (!isBookBorrowedByMember(bookId, memberId)) {
-                System.out.println("❌ This book is not borrowed by you.");
+                System.out.println(" This book is not borrowed by you.");
                 return false;
             }
 
-            // Process return
+
             borrowingDAO.returnBook(bookId, memberId);
             Logger.log("Book '" + book.getTitle() + "' returned by " + member.getName());
             return true;
         } catch (Exception e) {
-            System.out.println("❌ Error in return process: " + e.getMessage());
+            System.out.println(" Error in return process: " + e.getMessage());
             return false;
         }
     }
@@ -137,7 +137,7 @@ public class BorrowingService {
                 Book book = ((BookDAOImpl) bookDAO).getBookById(bookId);
                 result.add(book);
             } catch (Exception e) {
-                // Skip if book not found
+
             }
         }
         
@@ -169,7 +169,7 @@ public class BorrowingService {
                 
                 details.add(detail);
             } catch (Exception e) {
-                // Skip if there's an error getting details
+
             }
         }
         

@@ -23,11 +23,10 @@ public class MemberDAOImpl implements MemberDAO {
     private static final String FILE_PATH = "members.txt";
     
     public MemberDAOImpl() {
-        loadMembersFromFile(); // 📂 Load members from file
-        // Database loading is done in methods
-        // File Operations
+        loadMembersFromFile();
+
     }
-    // Save member to file
+
     private void saveMemberToFile(Member member) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(member.getId() + "," + 
@@ -41,7 +40,7 @@ public class MemberDAOImpl implements MemberDAO {
         }
     }
     
-    // Load members from file
+
     private void loadMembersFromFile() {
         File file = new File(FILE_PATH);
         
@@ -127,7 +126,7 @@ public class MemberDAOImpl implements MemberDAO {
         }
     }
     
-    // Delete member from file
+
     private void deleteMemberFromFile(int memberId) {
         File file = new File(FILE_PATH);
         List<String> fileLines = new ArrayList<>();
@@ -200,7 +199,7 @@ public class MemberDAOImpl implements MemberDAO {
     }
 
     @Override
-    public Member getMemberById(int id) {// First check in-memory list for faster access
+    public Member getMemberById(int id) {
         for (Member member : memberList) {
             if (member.getId() == id) {
                 return member;
@@ -278,7 +277,7 @@ public class MemberDAOImpl implements MemberDAO {
             int affectedRows = stmt.executeUpdate();
             
             if (affectedRows > 0) {
-                // Update in-memory list
+
                 for (int i = 0; i < memberList.size(); i++) {
                     if (memberList.get(i).getId() == member.getId()) {
                         memberList.set(i, member);
@@ -286,7 +285,7 @@ public class MemberDAOImpl implements MemberDAO {
                     }
                 }
                 
-                // Update in file
+
                 updateMemberInFile(member);
                 
                 System.out.println(" Member updated successfully!");
@@ -301,7 +300,7 @@ public class MemberDAOImpl implements MemberDAO {
 
     @Override
     public void deleteMember(int id) {
-        // Delete from database
+
         String query = "DELETE FROM members WHERE member_id = ?";
         boolean deleteSuccessful = false;
         
@@ -314,10 +313,10 @@ public class MemberDAOImpl implements MemberDAO {
             if (affectedRows > 0) {
                 deleteSuccessful = true;
                 
-                // Delete from in-memory list
+
                 memberList.removeIf(member -> member.getId() == id);
                 
-                // Delete from file
+
                 deleteMemberFromFile(id);
                 
                 System.out.println(" Member deleted successfully!");

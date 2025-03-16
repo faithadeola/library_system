@@ -327,7 +327,7 @@ public class BookDAOImpl implements BookDAO {
             return;
         }
         
-        // Write updated content back to file
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : fileLines) {
                 writer.write(line);

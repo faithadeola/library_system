@@ -123,10 +123,10 @@ public class BorrowingDAOImpl implements BorrowingDAO {
 
     @Override
     public void deleteBorrowing(int id) {
-        // Remove from in-memory list
+
         borrowings.removeIf(b -> b.getId() == id);
         
-        // Delete from database and file
+
         deleteBorrowingFromDatabase(id);
         deleteBorrowingFromFile(id);
         
@@ -135,7 +135,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
     }
     
     private Book findBookById(int bookId) {
-        // This should use the BookDAO to get the book
+
         try {
             return ((BookDAOImpl) bookDAO).getBookById(bookId);
         } catch (Exception e) {
@@ -159,7 +159,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             stmt.setInt(2, bookId);
             stmt.executeUpdate();
             
-            // Also update the in-memory book object if needed
+
             Book book = findBookById(bookId);
             if (book != null) {
                 book.setAvailableCopies(book.getAvailableCopies() + change);
@@ -187,7 +187,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
                 borrowings.add(borrowing);
             }
         } catch (SQLException e) {
-            // Table might not exist yet, create it
+
             createBorrowingsTable();
         }
     }
@@ -229,7 +229,7 @@ public class BorrowingDAOImpl implements BorrowingDAO {
             
             stmt.executeUpdate();
             
-            // Get the generated ID
+
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     borrowing.setId(generatedKeys.getInt(1));
@@ -337,12 +337,12 @@ public class BorrowingDAOImpl implements BorrowingDAO {
                     try {
                         int id = Integer.parseInt(parts[0]);
                         if (id == updatedBorrowing.getId()) {
-                            // Replace with updated details
+
                             line = formatBorrowingForFile(updatedBorrowing);
                             borrowingFound = true;
                         }
                     } catch (NumberFormatException e) {
-                        // Keep invalid lines
+
                     }
                 }
                 fileLines.add(line);

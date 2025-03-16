@@ -29,7 +29,7 @@ public class Main {
             System.out.print("\nEnter your choice: ");
             
             int feature = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (feature) {
                 case 1 -> manageBorrowings();
@@ -63,7 +63,7 @@ public class Main {
             System.out.print("\nEnter your choice: ");
 
             int bookAction = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (bookAction) {
                 case 1 -> {
@@ -75,14 +75,14 @@ public class Main {
                     String genre = scanner.nextLine();
                     System.out.print("Enter available copies: ");
                     int copies = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     bookService.addBook(title, author, genre, copies);
                 }
                 case 2 -> {
                     System.out.print("Enter Book ID to update: ");
                     int bookId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     System.out.print("Enter new title: ");
                     String newTitle = scanner.nextLine();
@@ -95,14 +95,14 @@ public class Main {
 
                     System.out.print("Enter new available copies: ");
                     int newAvailableCopies = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     bookService.updateBook(bookId, newTitle, newAuthor, newGenre, newAvailableCopies);
                 }
                 case 3 -> {
                     System.out.print("Enter Book ID to delete: ");
                     int bookId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     bookService.deleteBook(bookId);
                 }
@@ -114,7 +114,7 @@ public class Main {
                     System.out.print("Enter your choice: ");
 
                     int searchOption = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     switch (searchOption) {
                         case 1 -> {
@@ -162,7 +162,7 @@ public class Main {
                     System.out.print("Enter your choice: ");
 
                     int sortOption = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     List<Book> sortedBooks;
                     switch (sortOption) {
@@ -193,7 +193,7 @@ public class Main {
                     }
                 }
                 case 8 -> {
-                    return; // Return to main menu
+                    return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");
             }
@@ -217,7 +217,7 @@ public class Main {
             System.out.print("\nEnter your choice: ");
 
             int memberAction = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (memberAction) {
                 case 1 -> {
@@ -233,7 +233,7 @@ public class Main {
                 case 2 -> {
                     System.out.print("Enter Member ID to update: ");
                     int memberId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     Member existingMember = memberService.getMemberById(memberId);
                     if (existingMember != null) {
@@ -252,8 +252,7 @@ public class Main {
                 case 3 -> {
                     System.out.print("Enter Member ID to delete: ");
                     int memberId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
-
+                    scanner.nextLine();
                     System.out.print("Are you sure you want to delete this member? (y/n): ");
                     String confirmation = scanner.nextLine();
 
@@ -266,7 +265,7 @@ public class Main {
                 case 4 -> {
                     System.out.print("Enter Member ID to find: ");
                     int memberId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
+                    scanner.nextLine();
 
                     Member member = memberService.getMemberById(memberId);
                     if (member != null) {
@@ -291,7 +290,7 @@ public class Main {
                     }
                 }
                 case 6 -> {
-                    // Export members to CSV
+
                     List<Member> allMembers = memberService.getAllMembers();
                     if (!allMembers.isEmpty()) {
                         CSVExporter.exportMembersToCSV("members.csv", allMembers);
@@ -300,7 +299,7 @@ public class Main {
                     }
                 }
                 case 7 -> {
-                    return; // Return to main menu
+                    return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");
             }
@@ -323,7 +322,7 @@ public class Main {
             System.out.print("\nEnter your choice: ");
 
             int action = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (action) {
                 case 1 -> {
